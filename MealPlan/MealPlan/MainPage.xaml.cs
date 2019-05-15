@@ -19,13 +19,13 @@ namespace MealPlan
             meals.Add(new meals
             {
                 ID = 1,
-                Name = "Rice"
+                Name = "Meal 1"
             });
 
             meals.Add(new meals
             {
                 ID = 2,
-                Name = "Fish"
+                Name = "Meal 2"
             });
             BindingContext = this;
         }
