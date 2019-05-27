@@ -1,5 +1,7 @@
-﻿using System;
+﻿using SQLite;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -9,12 +11,17 @@ namespace MealPlan.Views
 {
     public class MealDetailPage : ContentPage
     {
+        //Form
         private Entry idEntry;
         private Entry nameEntry;
         private Entry courseEntry;
         private Entry addressEntry;
         private Entry emailEntry;
-        private Button saveButton;
+        private Button button;
+
+        //Database
+        string _dbPath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "myDB.db3");
+        meals Meal = new meals();
 
         public MealDetailPage (string state)
 		{
@@ -24,54 +31,59 @@ namespace MealPlan.Views
             switch (state)
             {
                 case "AddMeal" :
-                    idEntry = new Entry();
-                    idEntry.Keyboard = Keyboard.Text;
-                    idEntry.Placeholder = "Student ID";
-                    stackLayout.Children.Add(idEntry);
-
-                    nameEntry = new Entry();
-                    nameEntry.Keyboard = Keyboard.Text;
-                    nameEntry.Placeholder = "Student Name";
-                    stackLayout.Children.Add(nameEntry);
-
-                    courseEntry = new Entry();
-                    courseEntry.Keyboard = Keyboard.Text;
-                    courseEntry.Placeholder = "Course";
-                    stackLayout.Children.Add(courseEntry);
-
-                    addressEntry = new Entry();
-                    addressEntry.Keyboard = Keyboard.Text;
-                    addressEntry.Placeholder = "Address";
-                    stackLayout.Children.Add(addressEntry);
-
-                    emailEntry = new Entry();
-                    emailEntry.Keyboard = Keyboard.Text;
-                    emailEntry.Placeholder = "Email";
-                    stackLayout.Children.Add(emailEntry);
+                    button = new Button();
+                    button.Text = "Add";
+                    button.Clicked += AddButton_Clicked;
+                    stackLayout.Children.Add(button);
 
                     break;
-                case "Edit":
-
+                case "EditMeal" :
+                    button = new Button();
+                    button.Text = "Update";
+                    button.Clicked += UpdateButton_Clicked;
+                    stackLayout.Children.Add(button);
                     break;
                 case "DeleteMeal":
 
+                    button = new Button();
+                    button.Text = "Detele";
+                    button.Clicked += DeteleButton_Clicked;
+                    stackLayout.Children.Add(button);
                     break;
-                case "AddIngredient":
 
-                    break;
-                case "EditIngredient":
-
-                    break;
-                case "DeleteIngredient":
-
-                    break;
                 default: //error 
                     DisplayAlert("ERROR", "There is an Error. Please Try again", "Back");
                     base.OnBackButtonPressed();
                     break;
+
             }
+            Content = stackLayout;
 
 
         }
-	}
+
+        private void DeteleButton_Clicked(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void UpdateButton_Clicked(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void AddButton_Clicked(object sender, EventArgs e)
+        {
+            var db = new SQLiteConnection(_dbPath);
+            db.CreateTable<meals>();
+
+            var maxPK = db.Table<meals>().OrderByDescending(c => c.ID).FirstOrDefault();
+
+            meals newMeal = new meals()
+            {
+                ID = (maxPK == null ? 1 : maxPK.ID + 1),
+
+            };
+        }
+    }
 }
