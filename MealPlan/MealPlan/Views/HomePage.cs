@@ -9,6 +9,7 @@ namespace MealPlan.Views
 {
     public class HomePage : ContentPage
     {
+        public string state;
         public HomePage()
         {
             this.Title = "Select an option"; //Title page
@@ -37,24 +38,24 @@ namespace MealPlan.Views
             Content = stacklayout;
         }
 
-        private void BtnListIngredients_Clicked(object sender, EventArgs e)
+        private async void BtnListIngredients_Clicked(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            //await Navigation.PushAsync(new MealDetailPage(string state = "Add"));
         }
 
-        private void BtnListMeals_Clicked(object sender, EventArgs e)
+        private async void BtnListMeals_Clicked(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            //await new NotImplementedException();
         }
 
-        private void BtnAddMeal_Clicked(object sender, EventArgs e)
+        private async void BtnAddMeal_Clicked(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            //await new NotImplementedException();
         }
 
-        private void BtnAddIngredient_Clicked(object sender, EventArgs e)
+        private async void BtnAddIngredient_Clicked(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            //await new NotImplementedException();
         }
     }
 }
