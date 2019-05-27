@@ -40,22 +40,22 @@ namespace MealPlan.Views
 
         private async void BtnListIngredients_Clicked(object sender, EventArgs e)
         {
-            //await Navigation.PushAsync(new MealDetailPage(string state = "Add"));
+            //await Navigation.PushAsync(new MealDetailPage("ListIngredient"));
         }
 
         private async void BtnListMeals_Clicked(object sender, EventArgs e)
         {
-            //await new NotImplementedException();
+            //await Navigation.PushAsync(new MealDetailPage("ListMeals"));
         }
 
         private async void BtnAddMeal_Clicked(object sender, EventArgs e)
         {
-            //await new NotImplementedException();
+            await Navigation.PushAsync(new MealDetailPage("AddMeal"));
         }
 
         private async void BtnAddIngredient_Clicked(object sender, EventArgs e)
         {
-            //await new NotImplementedException();
+            await Navigation.PushAsync(new MealDetailPage("AddIngredient"));
         }
     }
 }
