@@ -12,11 +12,6 @@ namespace MealPlan.Views
     public class MealDetailPage : ContentPage
     {
         //Form
-        private Entry idEntry;
-        private Entry nameEntry;
-        private Entry courseEntry;
-        private Entry addressEntry;
-        private Entry emailEntry;
         private Button button;
 
         //Database
