@@ -119,19 +119,21 @@ namespace MealPlan.Views
             throw new NotImplementedException();
         }
 
-        private void AddButton_Clicked(object sender, EventArgs e)
+        private async void AddButton_Clicked(object sender, EventArgs e)
         {
             var db = new SQLiteConnection(_dbPath);
-            db.CreateTable<meals>();
+           
 
             var maxPK = db.Table<meals>().OrderByDescending(c => c.ID).FirstOrDefault();
 
             meals newMeal = new meals()
             {
                 ID = (maxPK == null ? 1 : maxPK.ID + 1),
-
+                Name = titleEntry.Text
             };
-
+            db.Insert(newMeal);
+            await DisplayAlert(null, newMeal.Name + "Saved", "OK");
+            await Navigation.PopAsync();
         }
     }
 }
