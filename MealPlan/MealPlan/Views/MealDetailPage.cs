@@ -41,7 +41,7 @@ namespace MealPlan.Views
                 case "AddMeal":
                     
                     this.Title = "Add of Meal";
-
+                    Meal = new meals();
                     pageTitle = new Label();
                     pageTitle.Text = "Add a Meal";
                     pageTitle.FontAttributes = FontAttributes.Bold;
@@ -77,9 +77,11 @@ namespace MealPlan.Views
                     button.Clicked += CancelButton_Clicked;
                     stackLayout.Children.Add(button);
 
+                    
                     break;
 
                 case "Detail":
+                    Meal = new meals();
                     pageTitle = new Label();
                     pageTitle.Text = "Add a Meal";
                     pageTitle.FontAttributes = FontAttributes.Bold;
@@ -121,10 +123,12 @@ namespace MealPlan.Views
                     button.Text = "Change";
                     button.Clicked += ChangeButton_clicked; ;
                     stackLayout.Children.Add(button);
-                    
+
+                    Meal = SelectedMeal;
                     break;
 
                 case "Change":
+                    Meal = new meals();
                     pageTitle = new Label();
                     pageTitle.Text = "Edit a Meal";
                     pageTitle.FontAttributes = FontAttributes.Bold;
@@ -132,6 +136,10 @@ namespace MealPlan.Views
                     pageTitle.HorizontalTextAlignment = TextAlignment.Center;
                     stackLayout.Children.Add(pageTitle);
 
+                    MealID = new Entry();
+                    MealID.Text = SelectedMeal.ID.ToString();
+                    MealID.IsReadOnly = true;
+                    stackLayout.Children.Add(MealID);
 
                     titleEntry = new Entry(); //requiment
                     titleEntry.Keyboard = Keyboard.Text;
@@ -167,6 +175,9 @@ namespace MealPlan.Views
                     button.Text = "Save";
                     button.Clicked += UpdateButton_Clicked;
                     stackLayout.Children.Add(button);
+
+
+                    Meal = SelectedMeal;
                     break;
 
 
@@ -179,38 +190,37 @@ namespace MealPlan.Views
             Content = stackLayout;
         }
 
-        private void ChangeButton_clicked(object sender, EventArgs e)
+        private async void ChangeButton_clicked(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            await Navigation.PushModalAsync(new MealDetailPage("Change", Meal));
         }
 
-        private async void CancelButton_Clicked(object sender, EventArgs e)
+        private void CancelButton_Clicked(object sender, EventArgs e)
         {
-
             base.OnBackButtonPressed();
-
-            await Navigation.PopAsync();
         }
 
-        private async void DeteleButton_Clicked(object sender, EventArgs e)
+        private void DeteleButton_Clicked(object sender, EventArgs e)
         {
             var db = new SQLiteConnection(_dbPath);
             db.Table<meals>().Delete(x => x.ID == Convert.ToInt32(MealID));
-            await Navigation.PopAsync();
+            DisplayAlert(null, Meal.Name + "Deleted", "OK");
+            base.OnBackButtonPressed();
         }
 
-        private async void UpdateButton_Clicked(object sender, EventArgs e)
+        private void UpdateButton_Clicked(object sender, EventArgs e)
         {
             var db = new SQLiteConnection(_dbPath);
             meals newMeal = new meals()
             {
-                ID = Convert.ToInt32(MealID),
+                ID = Convert.ToInt32(MealID.Text),
                 Name = titleEntry.Text,
                 Method = method.Text,
                 Ingredient = ingredientsEditor.Text
             };
             db.Update(newMeal);
-            await Navigation.PopAsync();
+            DisplayAlert(null, newMeal.Name + "Saved", "OK");
+            base.OnBackButtonPressed();
         }
 
         private async void AddButton_Clicked(object sender, EventArgs e)
@@ -228,6 +238,7 @@ namespace MealPlan.Views
                 Ingredient = ingredientsEditor.Text
             };
             db.Insert(newMeal);
+            Meal = newMeal;
             await DisplayAlert(null, newMeal.Name + "Saved", "OK");
             await Navigation.PopModalAsync();
         }
