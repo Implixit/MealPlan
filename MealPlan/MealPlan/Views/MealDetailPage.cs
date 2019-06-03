@@ -97,23 +97,65 @@ namespace MealPlan.Views
 
                     ingredientsEditor = new Editor(); //requiment
                     ingredientsEditor.Placeholder = "Enter your ingredients";
+                    ingredientsEditor.Text = SelectedMeal.Ingredient;
+                    ingredientsEditor.IsReadOnly = true;
                     ingredientsEditor.Keyboard = Keyboard.Text;
                     ingredientsEditor.AutoSize = EditorAutoSizeOption.TextChanges;
                     stackLayout.Children.Add(ingredientsEditor);
 
                     method = new Editor();//requiment
                     method.Placeholder = "Enter your method";
+                    method.Text = SelectedMeal.Method;
+                    method.IsReadOnly = true;
                     method.Keyboard = Keyboard.Text;
                     method.AutoSize = EditorAutoSizeOption.TextChanges;
                     stackLayout.Children.Add(method);
 
+                    
                     button = new Button();
-                    button.Text = "Add";
-                    button.Clicked += AddButton_Clicked;
+                    button.Text = "Back";
+                    button.Clicked += CancelButton_Clicked;
                     stackLayout.Children.Add(button);
 
                     button = new Button();
-                    button.Text = "Cancel";
+                    button.Text = "Change";
+                    button.Clicked += ChangeButton_clicked; ;
+                    stackLayout.Children.Add(button);
+                    
+                    break;
+
+                case "Change":
+                    pageTitle = new Label();
+                    pageTitle.Text = "Edit a Meal";
+                    pageTitle.FontAttributes = FontAttributes.Bold;
+                    pageTitle.FontSize = 25;
+                    pageTitle.HorizontalTextAlignment = TextAlignment.Center;
+                    stackLayout.Children.Add(pageTitle);
+
+
+                    titleEntry = new Entry(); //requiment
+                    titleEntry.Keyboard = Keyboard.Text;
+                    titleEntry.Placeholder = "Meal Name";
+                    titleEntry.Text = SelectedMeal.Name;
+                    stackLayout.Children.Add(titleEntry);
+
+                    ingredientsEditor = new Editor(); //requiment
+                    ingredientsEditor.Placeholder = "Enter your ingredients";
+                    ingredientsEditor.Text = SelectedMeal.Ingredient;
+                    ingredientsEditor.Keyboard = Keyboard.Text;
+                    ingredientsEditor.AutoSize = EditorAutoSizeOption.TextChanges;
+                    stackLayout.Children.Add(ingredientsEditor);
+
+                    method = new Editor();//requiment
+                    method.Placeholder = "Enter your method";
+                    method.Text = SelectedMeal.Method;
+                    method.Keyboard = Keyboard.Text;
+                    method.AutoSize = EditorAutoSizeOption.TextChanges;
+                    stackLayout.Children.Add(method);
+
+
+                    button = new Button();
+                    button.Text = "Back";
                     button.Clicked += CancelButton_Clicked;
                     stackLayout.Children.Add(button);
 
@@ -122,10 +164,11 @@ namespace MealPlan.Views
                     button.Clicked += DeteleButton_Clicked;
                     stackLayout.Children.Add(button);
                     button = new Button();
-                    button.Text = "Update";
+                    button.Text = "Save";
                     button.Clicked += UpdateButton_Clicked;
                     stackLayout.Children.Add(button);
                     break;
+
 
                 default: //error 
                     DisplayAlert("ERROR", "There is an Error. Please Try again", "Back");
@@ -136,9 +179,17 @@ namespace MealPlan.Views
             Content = stackLayout;
         }
 
-        private  void CancelButton_Clicked(object sender, EventArgs e)
+        private void ChangeButton_clicked(object sender, EventArgs e)
         {
+            throw new NotImplementedException();
+        }
+
+        private async void CancelButton_Clicked(object sender, EventArgs e)
+        {
+
             base.OnBackButtonPressed();
+
+            await Navigation.PopAsync();
         }
 
         private async void DeteleButton_Clicked(object sender, EventArgs e)

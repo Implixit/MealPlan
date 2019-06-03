@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using MealPlan.Views;
+
 
 using Xamarin.Forms;
 
@@ -17,6 +19,12 @@ namespace MealPlan.Views
         string _dbPath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "myDB.db3");
         public AllMeals()
         {
+
+            Label PageTitle = new Label();
+            PageTitle.Text = "Here is a list of all your meals";
+            PageTitle.FontAttributes = FontAttributes.Bold;
+            PageTitle.FontSize = 20;
+            
 
             listView = new ListView()
             {
@@ -55,7 +63,11 @@ namespace MealPlan.Views
             var db = new SQLiteConnection(_dbPath);
             StackLayout stackLayout = new StackLayout();
             listView.ItemsSource = db.Table<meals>().OrderBy(x => x.Name).ToList();
+
             listView.ItemSelected += ListView_ItemSelected;
+
+            stackLayout.Children.Add(PageTitle);
+
             stackLayout.Children.Add(listView);
 
             button = new Button();
