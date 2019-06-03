@@ -21,20 +21,20 @@ namespace MealPlan.Views
         private Picker ingredient4;
         private Picker ingredient5;
         private Editor method;
+        private Label pageTitle;
+        private Editor ingredientsEditor;
 
 
 
         //Database
         string _dbPath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "myDB.db3");
-        string _dbIngredientPath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "IngredientDB.db3");
+       // string _dbIngredientPath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "IngredientDB.db3");
         meals Meal = new meals();
 
 
         public MealDetailPage(string state)
         {
-            var db = new SQLiteConnection(_dbIngredientPath);
-            List<Ingredients> ingredients = db.Table<Ingredients>().OrderBy(x => x.ID).ToList();
-            var picker = new Picker { Title = "Select a Ingredient" };
+           
             
             StackLayout stackLayout = new StackLayout();
             switch (state)
@@ -43,44 +43,39 @@ namespace MealPlan.Views
                     
                     this.Title = "Add of Meal";
 
+                    pageTitle = new Label();
+                    pageTitle.Text = "Add a Meal";
+                    pageTitle.FontAttributes = FontAttributes.Bold;
+                    pageTitle.FontSize = 25;
+                    pageTitle.HorizontalTextAlignment = TextAlignment.Center;
+                    stackLayout.Children.Add(pageTitle);
+
+                    
                     titleEntry = new Entry();
                     titleEntry.Keyboard = Keyboard.Text;
                     titleEntry.Placeholder = "Meal Name";
                     stackLayout.Children.Add(titleEntry);
 
-                    ingredient1 = picker;
-                    ingredient1.Title = "Choose an Ingredient";
-                    ingredient1.ItemsSource = ingredients;
-                    stackLayout.Children.Add(ingredient1);
-
-                    ingredient2 = picker;
-                    ingredient2.Title = "Choose an Ingredient";
-                    //ingredient2.ItemsSource; DATABASE LINK GOES HERE
-                    stackLayout.Children.Add(ingredient2);
-
-                    ingredient3 = picker;
-                    ingredient3.Title = "Choose an Ingredient";
-                    //ingredient3.ItemsSource; DATABASE LINK GOES HERE
-                    stackLayout.Children.Add(ingredient3);
-
-                    ingredient4 = picker;
-                    ingredient4.Title = "Choose an Ingredient";
-                    //ingredient4.ItemsSource; DATABASE LINK GOES HERE
-                    stackLayout.Children.Add(ingredient4);
-
-                    ingredient5 = picker;
-                    ingredient5.Title = "Choose an Ingredient";
-                    //ingredient5.ItemsSource; DATABASE LINK GOES HERE
-                    stackLayout.Children.Add(ingredient5);
-
+                    ingredientsEditor = new Editor();
+                    ingredientsEditor.Placeholder = "Enter your ingredients";
+                    ingredientsEditor.Keyboard = Keyboard.Text;
+                    ingredientsEditor.AutoSize = EditorAutoSizeOption.TextChanges;
+                    stackLayout.Children.Add(ingredientsEditor);
+                   
                     method = new Editor();
                     method.Placeholder = "Enter your method";
                     method.Keyboard = Keyboard.Text;
+                    method.AutoSize = EditorAutoSizeOption.TextChanges;
                     stackLayout.Children.Add(method);
 
                     button = new Button();
                     button.Text = "Add";
                     button.Clicked += AddButton_Clicked;
+                    stackLayout.Children.Add(button);
+
+                    button = new Button();
+                    button.Text = "Cancel";
+                    button.Clicked += CancelButton_Clicked;
                     stackLayout.Children.Add(button);
 
                     break;
@@ -104,10 +99,13 @@ namespace MealPlan.Views
                     break;
 
             }
-
+            Content = stackLayout;
         }
 
-
+        private async void CancelButton_Clicked(object sender, EventArgs e)
+        {
+            await Navigation.PopAsync();
+        }
 
         private void DeteleButton_Clicked(object sender, EventArgs e)
         {

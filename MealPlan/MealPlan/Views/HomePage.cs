@@ -12,38 +12,32 @@ namespace MealPlan.Views
     public class HomePage : ContentPage
     {
         string _dbPath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "myDB.db3");
-        string _dbIngredientPath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "IngredientDB.db3");
+        //string _dbIngredientPath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "IngredientDB.db3");
         public string state;
         public HomePage()
         {
             var db = new SQLiteConnection(_dbPath);
             db.CreateTable<meals>();
-            db = new SQLiteConnection(_dbIngredientPath);
-            db.CreateTable<Ingredients>();
+            //db = new SQLiteConnection(_dbIngredientPath);
+            //db.CreateTable<Ingredients>();
             this.Title = "Select an option"; //Title page
             StackLayout stacklayout = new StackLayout();
+
+            Label PageTitle = new Label();
+            PageTitle.Text = "Welcome, What would you like to do?";
+            PageTitle.FontSize = 30;
+            PageTitle.FontAttributes = FontAttributes.Bold;
+            stacklayout.Children.Add(PageTitle);
 
             Button BtnAddMeal = new Button();
             BtnAddMeal.Text = "Add a New Meal";
             BtnAddMeal.Clicked += BtnAddMeal_Clicked;
             stacklayout.Children.Add(BtnAddMeal);
 
-            Button BtnListMeals = new Button();
-            BtnListMeals.Text = "Get List of Meals";
-            BtnListMeals.Clicked += BtnListMeals_Clicked;
-            stacklayout.Children.Add(BtnListMeals);
-
-            Button BtnAddIngredient = new Button();
-            BtnAddIngredient.Text = "Add a New Ingredient";
-            BtnAddIngredient.Clicked += BtnAddIngredient_Clicked;
-            stacklayout.Children.Add(BtnAddIngredient);
-
-            Button BtnListIngredients = new Button();
-            BtnListIngredients.Text = "Get List of Ingredients";
-            BtnListIngredients.Clicked += BtnListIngredients_Clicked;
-            stacklayout.Children.Add(BtnListIngredients);
+       
 
             Content = stacklayout;
+            
         }
 
         private  void BtnListIngredients_Clicked(object sender, EventArgs e)
@@ -58,7 +52,10 @@ namespace MealPlan.Views
 
         private async void BtnAddMeal_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new MealDetailPage("AddMeal"));
+           // MealDetailPage hp = new MealDetailPage("AddMeal");
+            //await Navigation.PushModalAsync(hp);
+
+            await Navigation.PushModalAsync(new MealDetailPage("AddMeal"));
         }
 
         private async void BtnAddIngredient_Clicked(object sender, EventArgs e)
