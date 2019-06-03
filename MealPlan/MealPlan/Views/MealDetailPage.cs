@@ -15,10 +15,10 @@ namespace MealPlan.Views
         
         private Button button;
         private Entry titleEntry;
-<<<<<<< Updated upstream
-=======
+
+
         private Entry MealID;
->>>>>>> Stashed changes
+
         private Editor method;
         private Label pageTitle;
         private Editor ingredientsEditor;
@@ -80,6 +80,42 @@ namespace MealPlan.Views
                     break;
 
                 case "Detail":
+                    pageTitle = new Label();
+                    pageTitle.Text = "Add a Meal";
+                    pageTitle.FontAttributes = FontAttributes.Bold;
+                    pageTitle.FontSize = 25;
+                    pageTitle.HorizontalTextAlignment = TextAlignment.Center;
+                    stackLayout.Children.Add(pageTitle);
+
+
+                    titleEntry = new Entry(); //requiment
+                    titleEntry.Keyboard = Keyboard.Text;
+                    titleEntry.Placeholder = "Meal Name";
+                    titleEntry.Text = SelectedMeal.Name;
+                    titleEntry.IsReadOnly = true;
+                    stackLayout.Children.Add(titleEntry);
+
+                    ingredientsEditor = new Editor(); //requiment
+                    ingredientsEditor.Placeholder = "Enter your ingredients";
+                    ingredientsEditor.Keyboard = Keyboard.Text;
+                    ingredientsEditor.AutoSize = EditorAutoSizeOption.TextChanges;
+                    stackLayout.Children.Add(ingredientsEditor);
+
+                    method = new Editor();//requiment
+                    method.Placeholder = "Enter your method";
+                    method.Keyboard = Keyboard.Text;
+                    method.AutoSize = EditorAutoSizeOption.TextChanges;
+                    stackLayout.Children.Add(method);
+
+                    button = new Button();
+                    button.Text = "Add";
+                    button.Clicked += AddButton_Clicked;
+                    stackLayout.Children.Add(button);
+
+                    button = new Button();
+                    button.Text = "Cancel";
+                    button.Clicked += CancelButton_Clicked;
+                    stackLayout.Children.Add(button);
 
                     button = new Button();
                     button.Text = "Detele";
@@ -142,7 +178,7 @@ namespace MealPlan.Views
             };
             db.Insert(newMeal);
             await DisplayAlert(null, newMeal.Name + "Saved", "OK");
-            await Navigation.PopAsync();
+            await Navigation.PopModalAsync();
         }
     }
 }

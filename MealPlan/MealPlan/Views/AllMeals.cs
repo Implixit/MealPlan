@@ -12,16 +12,19 @@ namespace MealPlan.Views
     public class AllMeals : ContentPage
     {
         private ListView listView;
+        private Button button;
+        meals SelectedMeal = new meals();
         string _dbPath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "myDB.db3");
         public AllMeals()
         {
+
             listView = new ListView()
             {
                 ItemTemplate = new DataTemplate(() =>
                 {
                     Label nameLabel = new Label();
-                    nameLabel.SetBinding(Label.TextProperty, "Meal Name");
-                    
+                    nameLabel.SetBinding(Label.TextProperty, "Name");
+
 
                     return new ViewCell
                     {
@@ -37,7 +40,7 @@ namespace MealPlan.Views
                                     Spacing = 0,
                                     Children =
                                     {
-                                        nameLabel,
+                                        nameLabel
                                         
                                     }
                                 }
@@ -52,10 +55,27 @@ namespace MealPlan.Views
             var db = new SQLiteConnection(_dbPath);
             StackLayout stackLayout = new StackLayout();
             listView.ItemsSource = db.Table<meals>().OrderBy(x => x.Name).ToList();
+            listView.ItemSelected += ListView_ItemSelected;
             stackLayout.Children.Add(listView);
+
+            button = new Button();
+            button.Text = "Back";
+            button.Clicked += BackButton_Clicked;
+            stackLayout.Children.Add(button);
 
             Content = stackLayout;
 
+        }
+
+        private async void ListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            SelectedMeal = (meals)e.SelectedItem;
+            await Navigation.PushModalAsync(new MealDetailPage("Detail", SelectedMeal));
+        }
+
+        private void BackButton_Clicked(object sender, EventArgs e)
+        {
+            base.OnBackButtonPressed();
         }
     }
 }

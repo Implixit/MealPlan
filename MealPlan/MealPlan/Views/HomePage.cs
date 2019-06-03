@@ -34,46 +34,40 @@ namespace MealPlan.Views
             BtnAddMeal.Clicked += BtnAddMeal_Clicked;
             stacklayout.Children.Add(BtnAddMeal);
 
-            Button BtnListIngredients = new Button();
-            BtnListIngredients.Text = "View All Meals";
-            BtnListIngredients.Clicked += BtnListIngredients_Clicked;
-            stacklayout.Children.Add(BtnListIngredients);
+            Button BtnListMeal = new Button();
+            BtnListMeal.Text = "View All Meals";
+            BtnListMeal.Clicked += BtnListMeals_Clicked;
+            stacklayout.Children.Add(BtnListMeal);
 
 
 
             Content = stacklayout;
-            
+
         }
 
-        private  void BtnListIngredients_Clicked(object sender, EventArgs e)
+        private void BtnListIngredients_Clicked(object sender, EventArgs e)
         {
             //await Navigation.PushAsync(new MealDetailPage("ListIngredient"));
         }
 
         private async void BtnListMeals_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new MealDetailPage("AllMeals"));
+
+            await Navigation.PushModalAsync(new AllMeals());
         }
 
         private async void BtnAddMeal_Clicked(object sender, EventArgs e)
         {
-<<<<<<< Updated upstream
-           
-=======
             meals NullMeal = new meals();
->>>>>>> Stashed changes
-
             await Navigation.PushModalAsync(new MealDetailPage("AddMeal", NullMeal));
         }
 
-        private async void BtnAddIngredient_Clicked(object sender, EventArgs e)
-        {
-<<<<<<< Updated upstream
-            
-=======
-            //await Navigation.PushAsync(new MealDetailPage("AddIngredient"));
->>>>>>> Stashed changes
-        }
+        //    private async void BtnAddIngredient_Clicked(object sender, EventArgs e)
+        //    {
+
+        //    }
+        //}
     }
 }
-    
+
+
