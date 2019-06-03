@@ -15,11 +15,6 @@ namespace MealPlan.Views
         
         private Button button;
         private Entry titleEntry;
-        private Picker ingredient1;
-        private Picker ingredient2;
-        private Picker ingredient3;
-        private Picker ingredient4;
-        private Picker ingredient5;
         private Editor method;
         private Label pageTitle;
         private Editor ingredientsEditor;

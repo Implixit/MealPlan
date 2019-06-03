@@ -34,7 +34,12 @@ namespace MealPlan.Views
             BtnAddMeal.Clicked += BtnAddMeal_Clicked;
             stacklayout.Children.Add(BtnAddMeal);
 
-       
+            Button BtnListIngredients = new Button();
+            BtnListIngredients.Text = "View All Meals";
+            BtnListIngredients.Clicked += BtnListIngredients_Clicked;
+            stacklayout.Children.Add(BtnListIngredients);
+
+
 
             Content = stacklayout;
             
@@ -45,22 +50,21 @@ namespace MealPlan.Views
             //await Navigation.PushAsync(new MealDetailPage("ListIngredient"));
         }
 
-        private  void BtnListMeals_Clicked(object sender, EventArgs e)
+        private async void BtnListMeals_Clicked(object sender, EventArgs e)
         {
-            //await Navigation.PushAsync(new MealDetailPage("ListMeals"));
+            await Navigation.PushAsync(new MealDetailPage("AllMeals"));
         }
 
         private async void BtnAddMeal_Clicked(object sender, EventArgs e)
         {
-           // MealDetailPage hp = new MealDetailPage("AddMeal");
-            //await Navigation.PushModalAsync(hp);
+           
 
             await Navigation.PushModalAsync(new MealDetailPage("AddMeal"));
         }
 
         private async void BtnAddIngredient_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new MealDetailPage("AddIngredient"));
+            
         }
     }
 }
