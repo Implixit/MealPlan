@@ -15,6 +15,10 @@ namespace MealPlan.Views
         
         private Button button;
         private Entry titleEntry;
+<<<<<<< Updated upstream
+=======
+        private Entry MealID;
+>>>>>>> Stashed changes
         private Editor method;
         private Label pageTitle;
         private Editor ingredientsEditor;
@@ -27,7 +31,7 @@ namespace MealPlan.Views
         meals Meal = new meals();
 
 
-        public MealDetailPage(string state)
+        public MealDetailPage(string state, meals SelectedMeal)
         {
            
             
@@ -46,18 +50,18 @@ namespace MealPlan.Views
                     stackLayout.Children.Add(pageTitle);
 
                     
-                    titleEntry = new Entry();
+                    titleEntry = new Entry(); //requiment
                     titleEntry.Keyboard = Keyboard.Text;
                     titleEntry.Placeholder = "Meal Name";
                     stackLayout.Children.Add(titleEntry);
 
-                    ingredientsEditor = new Editor();
+                    ingredientsEditor = new Editor(); //requiment
                     ingredientsEditor.Placeholder = "Enter your ingredients";
                     ingredientsEditor.Keyboard = Keyboard.Text;
                     ingredientsEditor.AutoSize = EditorAutoSizeOption.TextChanges;
                     stackLayout.Children.Add(ingredientsEditor);
                    
-                    method = new Editor();
+                    method = new Editor();//requiment
                     method.Placeholder = "Enter your method";
                     method.Keyboard = Keyboard.Text;
                     method.AutoSize = EditorAutoSizeOption.TextChanges;
@@ -74,17 +78,16 @@ namespace MealPlan.Views
                     stackLayout.Children.Add(button);
 
                     break;
-                case "EditMeal" :
-                    button = new Button();
-                    button.Text = "Update";
-                    button.Clicked += UpdateButton_Clicked;
-                    stackLayout.Children.Add(button);
-                    break;
-                case "DeleteMeal":
+
+                case "Detail":
 
                     button = new Button();
                     button.Text = "Detele";
                     button.Clicked += DeteleButton_Clicked;
+                    stackLayout.Children.Add(button);
+                    button = new Button();
+                    button.Text = "Update";
+                    button.Clicked += UpdateButton_Clicked;
                     stackLayout.Children.Add(button);
                     break;
 
@@ -97,19 +100,30 @@ namespace MealPlan.Views
             Content = stackLayout;
         }
 
-        private async void CancelButton_Clicked(object sender, EventArgs e)
+        private  void CancelButton_Clicked(object sender, EventArgs e)
         {
+            base.OnBackButtonPressed();
+        }
+
+        private async void DeteleButton_Clicked(object sender, EventArgs e)
+        {
+            var db = new SQLiteConnection(_dbPath);
+            db.Table<meals>().Delete(x => x.ID == Convert.ToInt32(MealID));
             await Navigation.PopAsync();
         }
 
-        private void DeteleButton_Clicked(object sender, EventArgs e)
+        private async void UpdateButton_Clicked(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
-        }
-
-        private void UpdateButton_Clicked(object sender, EventArgs e)
-        {
-            throw new NotImplementedException();
+            var db = new SQLiteConnection(_dbPath);
+            meals newMeal = new meals()
+            {
+                ID = Convert.ToInt32(MealID),
+                Name = titleEntry.Text,
+                Method = method.Text,
+                Ingredient = ingredientsEditor.Text
+            };
+            db.Update(newMeal);
+            await Navigation.PopAsync();
         }
 
         private async void AddButton_Clicked(object sender, EventArgs e)
@@ -122,7 +136,9 @@ namespace MealPlan.Views
             meals newMeal = new meals()
             {
                 ID = (maxPK == null ? 1 : maxPK.ID + 1),
-                Name = titleEntry.Text
+                Name = titleEntry.Text,
+                Method = method.Text,
+                Ingredient = ingredientsEditor.Text
             };
             db.Insert(newMeal);
             await DisplayAlert(null, newMeal.Name + "Saved", "OK");

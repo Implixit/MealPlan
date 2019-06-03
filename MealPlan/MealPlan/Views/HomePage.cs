@@ -57,14 +57,22 @@ namespace MealPlan.Views
 
         private async void BtnAddMeal_Clicked(object sender, EventArgs e)
         {
+<<<<<<< Updated upstream
            
+=======
+            meals NullMeal = new meals();
+>>>>>>> Stashed changes
 
-            await Navigation.PushModalAsync(new MealDetailPage("AddMeal"));
+            await Navigation.PushModalAsync(new MealDetailPage("AddMeal", NullMeal));
         }
 
         private async void BtnAddIngredient_Clicked(object sender, EventArgs e)
         {
+<<<<<<< Updated upstream
             
+=======
+            //await Navigation.PushAsync(new MealDetailPage("AddIngredient"));
+>>>>>>> Stashed changes
         }
     }
 }
