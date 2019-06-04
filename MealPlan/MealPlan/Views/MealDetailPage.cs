@@ -68,9 +68,9 @@ namespace MealPlan.Views
                     button.Clicked += AddButton_Clicked;
                     stackLayout.Children.Add(button);
 
-                    button = new Button();// Cancel button 
+                    button = new Button();// Back to the Home Page 
                     button.Text = "Cancel";
-                    button.Clicked += CancelButton_Clicked;
+                    button.Clicked += BackButton_Clicked;
                     stackLayout.Children.Add(button);
 
                     
@@ -112,8 +112,13 @@ namespace MealPlan.Views
 
                     
                     button = new Button();// Back to the List of all meal
-                    button.Text = "Back";
+                    button.Text = "Back to list Meal";
                     button.Clicked += CancelButton_Clicked;
+                    stackLayout.Children.Add(button);
+
+                    button = new Button();//back to the Home page
+                    button.Text = "Back To home page";
+                    button.Clicked += HomePageButton_Clicked;
                     stackLayout.Children.Add(button);
 
                     button = new Button();// Edit selected meal 
@@ -165,6 +170,7 @@ namespace MealPlan.Views
                     button.Clicked += CancelButton_Clicked;
                     stackLayout.Children.Add(button);
 
+
                     button = new Button(); // Deleted selected meal 
                     button.Text = "Detele";
                     button.Clicked += DeteleButton_Clicked;
@@ -188,6 +194,18 @@ namespace MealPlan.Views
             Content = stackLayout;
         }
 
+        private async void HomePageButton_Clicked(object sender, EventArgs e)
+        {
+            //Back to home page
+            await Navigation.PushModalAsync(new HomePage());
+        }
+
+        private async void BackButton_Clicked(object sender, EventArgs e)
+        {
+            //Back to home page
+            await Navigation.PushModalAsync(new HomePage());
+        }
+
         private async void ChangeButton_clicked(object sender, EventArgs e)
         {
             // New page for this page but is not all read only
@@ -208,12 +226,18 @@ namespace MealPlan.Views
             // Vaildation make sure there are no null in the field 
             if (Vaildation())
             {
-                // find the ID in stored Meal and Delete the one have the same ID
-                db.Table<meals>().Delete(x => x.ID == Meal.ID);
-                // Show to user Which one has been deleted.
-                await DisplayAlert(null, Meal.Name + " Deleted", "OK");
-                //Back to List of all meals
-                await Navigation.PushModalAsync(new AllMeals());
+                
+                if (await DisplayAlert("Warning","Are you sure you want to delete this meal?","Yes","No"))
+                {
+                    // find the ID in stored Meal and Delete the one have the same ID
+                    db.Table<meals>().Delete(x => x.ID == Meal.ID);
+                    // Show to user Which one has been deleted.
+                    await DisplayAlert(null, Meal.Name + " Deleted", "OK");
+                    //Back to List of all meals
+                    await Navigation.PushModalAsync(new AllMeals());
+                }
+                
+                
             }
             
             

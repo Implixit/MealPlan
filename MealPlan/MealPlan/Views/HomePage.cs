@@ -56,10 +56,12 @@ namespace MealPlan.Views
         {
             meals RanmdomMeal = new meals();
             Random random = new Random();
-            var db = new SQLiteConnection(_dbPath);
             
+            var db = new SQLiteConnection(_dbPath);
+
             // min = 1 so not random to 0 
-            int RandomID = random.Next(1,db.Table<meals>().OrderBy(c => c.ID).Count()+1);
+            int RandomID = random.Next(1, Convert.ToInt32(db.Table<meals>().Count()));            
+            
             //random a number and use it Find that ID in DB
             RanmdomMeal = db.Table<meals>().FirstOrDefault(c => c.ID == RandomID);
             await Navigation.PushModalAsync(new MealDetailPage("Detail", RanmdomMeal));
