@@ -10,15 +10,10 @@ using Xamarin.Forms;
 namespace MealPlan.Views
 {
     public class MealDetailPage : ContentPage
-    {
-
-        
+    {       
         private Button button;
         private Entry titleEntry;
-
-
         private Entry MealID;
-
         private Editor method;
         private Label pageTitle;
         private Editor ingredientsEditor;
@@ -81,9 +76,10 @@ namespace MealPlan.Views
                     break;
 
                 case "Detail":
+                    
                     Meal = new meals();
                     pageTitle = new Label();
-                    pageTitle.Text = "Add a Meal";
+                    pageTitle.Text = "Detail a Meal";
                     pageTitle.FontAttributes = FontAttributes.Bold;
                     pageTitle.FontSize = 25;
                     pageTitle.HorizontalTextAlignment = TextAlignment.Center;
@@ -128,6 +124,7 @@ namespace MealPlan.Views
                     break;
 
                 case "Change":
+                    
                     Meal = new meals();
                     pageTitle = new Label();
                     pageTitle.Text = "Edit a Meal";
@@ -192,55 +189,85 @@ namespace MealPlan.Views
 
         private async void ChangeButton_clicked(object sender, EventArgs e)
         {
+            
             await Navigation.PushModalAsync(new MealDetailPage("Change", Meal));
+           
         }
 
-        private void CancelButton_Clicked(object sender, EventArgs e)
+        private async void CancelButton_Clicked(object sender, EventArgs e)
         {
-            base.OnBackButtonPressed();
+            await Navigation.PushModalAsync(new AllMeals());
         }
 
-        private void DeteleButton_Clicked(object sender, EventArgs e)
-        {
-            var db = new SQLiteConnection(_dbPath);
-            db.Table<meals>().Delete(x => x.ID == Convert.ToInt32(MealID));
-            DisplayAlert(null, Meal.Name + "Deleted", "OK");
-            base.OnBackButtonPressed();
-        }
-
-        private void UpdateButton_Clicked(object sender, EventArgs e)
+        private async void DeteleButton_Clicked(object sender, EventArgs e)
         {
             var db = new SQLiteConnection(_dbPath);
-            meals newMeal = new meals()
+            if (Vaildation())
             {
-                ID = Convert.ToInt32(MealID.Text),
-                Name = titleEntry.Text,
-                Method = method.Text,
-                Ingredient = ingredientsEditor.Text
-            };
-            db.Update(newMeal);
-            DisplayAlert(null, newMeal.Name + "Saved", "OK");
-            base.OnBackButtonPressed();
+                db.Table<meals>().Delete(x => x.ID == Meal.ID);
+                await DisplayAlert(null, Meal.Name + "Deleted", "OK");
+                await Navigation.PopModalAsync();
+            }
+            
+            
+        }
+
+        private async void UpdateButton_Clicked(object sender, EventArgs e)
+        {
+            
+            var db = new SQLiteConnection(_dbPath);
+            if (Vaildation())
+            {
+                meals newMeal = new meals()
+                {
+                    ID = Convert.ToInt32(MealID.Text),
+                    Name = titleEntry.Text,
+                    Method = method.Text,
+                    Ingredient = ingredientsEditor.Text
+                };
+                db.Update(newMeal);
+                await DisplayAlert(null, newMeal.Name + "Saved", "OK");
+                await Navigation.PopModalAsync();
+            }
+            
+            
         }
 
         private async void AddButton_Clicked(object sender, EventArgs e)
         {
             var db = new SQLiteConnection(_dbPath);
-           
 
-            var maxPK = db.Table<meals>().OrderByDescending(c => c.ID).FirstOrDefault();
-
-            meals newMeal = new meals()
+            if (Vaildation())
             {
-                ID = (maxPK == null ? 1 : maxPK.ID + 1),
-                Name = titleEntry.Text,
-                Method = method.Text,
-                Ingredient = ingredientsEditor.Text
-            };
-            db.Insert(newMeal);
-            Meal = newMeal;
-            await DisplayAlert(null, newMeal.Name + "Saved", "OK");
-            await Navigation.PopModalAsync();
+                var maxPK = db.Table<meals>().OrderByDescending(c => c.ID).FirstOrDefault();
+
+                meals newMeal = new meals()
+                {
+                    ID = (maxPK == null ? 1 : maxPK.ID + 1),
+                    Name = titleEntry.Text,
+                    Method = method.Text,
+                    Ingredient = ingredientsEditor.Text
+                };
+                db.Insert(newMeal);
+                Meal = newMeal;
+                await DisplayAlert(null, newMeal.Name + "Saved", "OK");
+                await Navigation.PopModalAsync();
+            }
+           
+            
+        }
+
+        private bool Vaildation()
+        {
+            if (titleEntry.Text == null || method.Text==null || ingredientsEditor.Text == null)
+            {
+                DisplayAlert(null, "Please complete form to continue", "OK");
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
     }
 }

@@ -85,9 +85,9 @@ namespace MealPlan.Views
             await Navigation.PushModalAsync(new MealDetailPage("Detail", SelectedMeal));
         }
 
-        private void BackButton_Clicked(object sender, EventArgs e)
+        private async void BackButton_Clicked(object sender, EventArgs e)
         {
-            base.OnBackButtonPressed();
+            await Navigation.PushModalAsync(new HomePage());
         }
     }
 }
