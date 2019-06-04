@@ -280,7 +280,7 @@ namespace MealPlan.Views
         //Vaildation to make sure information needed is not empty 
         private bool Vaildation()
         {
-            if (titleEntry.Text == null || method.Text==null || ingredientsEditor.Text == null)
+            if (string.IsNullOrEmpty(titleEntry.Text)  || string.IsNullOrEmpty(method.Text) || string.IsNullOrEmpty(ingredientsEditor.Text))
             {
                 // Tell user need to fill all field 
                 DisplayAlert(null, "Please complete form to continue", "OK");
