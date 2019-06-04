@@ -11,15 +11,18 @@ namespace MealPlan.Views
 {
     public class HomePage : ContentPage
     {
+        // connection for DB
         string _dbPath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "myDB.db3");
-        //string _dbIngredientPath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "IngredientDB.db3");
+       
         public string state;
         public HomePage()
         {
+            //Connection for DB
             var db = new SQLiteConnection(_dbPath);
+            // Create Table for meal
             db.CreateTable<meals>();
-            //db = new SQLiteConnection(_dbIngredientPath);
-            //db.CreateTable<Ingredients>();
+            
+            // Layout of the page
             this.Title = "Select an option"; //Title page
             StackLayout stacklayout = new StackLayout();
 
@@ -64,15 +67,18 @@ namespace MealPlan.Views
 
         private async void BtnListMeals_Clicked(object sender, EventArgs e)
         {
+            // Show all List of meal 
             await Navigation.PushModalAsync(new AllMeals());
         }
 
         private async void BtnAddMeal_Clicked(object sender, EventArgs e)
         {
+            // Send a empty meals 
             meals NullMeal = new meals();
+            // Send Function and the empty meal
             await Navigation.PushModalAsync(new MealDetailPage("AddMeal", NullMeal));
         }
-
+        
 
     }
 }
