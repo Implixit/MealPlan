@@ -205,8 +205,8 @@ namespace MealPlan.Views
             if (Vaildation())
             {
                 db.Table<meals>().Delete(x => x.ID == Meal.ID);
-                await DisplayAlert(null, Meal.Name + "Deleted", "OK");
-                await Navigation.PopModalAsync();
+                await DisplayAlert(null, Meal.Name + " Deleted", "OK");
+                await Navigation.PushModalAsync(new AllMeals());
             }
             
             
@@ -226,8 +226,8 @@ namespace MealPlan.Views
                     Ingredient = ingredientsEditor.Text
                 };
                 db.Update(newMeal);
-                await DisplayAlert(null, newMeal.Name + "Saved", "OK");
-                await Navigation.PopModalAsync();
+                await DisplayAlert(null, newMeal.Name + " Saved", "OK");
+                await Navigation.PushModalAsync(new AllMeals());
             }
             
             
