@@ -40,24 +40,31 @@ namespace MealPlan.Views
             BtnListMeal.Clicked += BtnListMeals_Clicked;
             stacklayout.Children.Add(BtnListMeal);
 
-            
+            Button BtnRandom = new Button();
+            BtnRandom.Text = "Random a  Meals";
+            BtnRandom.Clicked += BtnRandom_Clicked;
+            stacklayout.Children.Add(BtnRandom);
 
             Content = stacklayout;
 
         }
 
-        private void BtnListIngredients_Clicked(object sender, EventArgs e)
+        private async void BtnRandom_Clicked(object sender, EventArgs e)
         {
-            //await Navigation.PushAsync(new MealDetailPage("ListIngredient"));
+            meals RanmdomMeal = new meals();
+            Random random = new Random();
+            var db = new SQLiteConnection(_dbPath);
+            
+            // min = 1 so not random to 0 
+            int RandomID = random.Next(1,db.Table<meals>().OrderBy(c => c.ID).Count()+1);
+            //random a number and use it Find that ID in DB
+            RanmdomMeal = db.Table<meals>().FirstOrDefault(c => c.ID == RandomID);
+            await Navigation.PushModalAsync(new MealDetailPage("Detail", RanmdomMeal));
         }
 
         private async void BtnListMeals_Clicked(object sender, EventArgs e)
         {
-
-
             await Navigation.PushModalAsync(new AllMeals());
-            
-
         }
 
         private async void BtnAddMeal_Clicked(object sender, EventArgs e)
